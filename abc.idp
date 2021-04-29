@@ -1,0 +1,16 @@
+vocabulary V {
+    A
+    B
+    C
+}
+structure S: V {
+    A = true
+    B = false
+    C = true
+}
+theory T: V {
+    A & (B | ~C).
+}
+procedure main() {
+    print(sat(T, S))
+}
