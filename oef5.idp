@@ -1,0 +1,39 @@
+vocabulary V {
+    P
+    Q
+    R
+}
+
+
+structure S: V {
+    P = true
+    Q = true
+    R = false
+}
+
+
+theory T1: V{P => Q.}
+theory T2: V{R => Q.}
+theory T3: V{P => R.}
+
+theory T4: V{P<=> Q.}
+theory T5: V{P<=> R.}
+
+theory T6: V{(P & Q )<=>(P | R).}
+theory T7: V{(P | Q )<=>(P & R).}
+theory T8: V{(P => Q) <=>(P<= R).}
+
+procedure main() {
+    print(sat(T1, S))
+    print(sat(T2, S))
+    print(sat(T3, S))
+
+    print(sat(T4, S))
+	print(sat(T5, S))
+    
+    print(sat(T6, S))
+    print(sat(T7, S))
+    print(sat(T8, S))
+
+    //printmodels(modelexpand(T, S))
+}
