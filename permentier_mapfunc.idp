@@ -1,0 +1,42 @@
+/*
+ * permentier_mapfunc.idp
+ * Romeo Permentier
+ * 29/04/2021
+ */
+
+vocabulary V {
+    /* ----- TYPE ----- */
+	type Kleur
+	type Land
+    
+    /* ----- CONSTANTE ----- */
+    
+    
+    /* ----- RELATIE ----- */
+	Grens(Land, Land)
+    
+    /* ----- FUNCTIE ----- */
+    ToegekendeKleur(Land): Kleur
+}
+
+structure S : V {
+	Kleur = { Rood; Oranje; Geel; Groen; Blauw}
+	Land = { Belgie; Nederland; Duitsland; Luxemburg; Frankrijk; Zwitserland; Oostenrijk }
+	Grens = { 
+		(Nederland,Belgie); 	 (Nederland,Duitsland);  (Belgie,Frankrijk);
+		(Belgie,Luxemburg); 	 (Belgie,Duitsland); 	 (Luxemburg,Frankrijk); 
+		(Luxemburg, Duitsland);  (Frankrijk,Duitsland);  (Frankrijk,Zwitserland); 
+		(Duitsland,Zwitserland); (Duitsland,Oostenrijk); (Zwitserland,Oostenrijk); 
+    }
+}
+
+theory T : V {
+   	
+       ! land1 : ! land2: Grens(land1,land2) => ToegekendeKleur(land1)~= ToegekendeKleur(land2).
+    
+}
+
+procedure main() {
+    stdoptions.nbmodels = 100
+    printmodels(modelexpand(T,S))
+}
