@@ -1,0 +1,28 @@
+/*  
+ * circuit.idp
+ *
+ */
+
+vocabulary CircVoc {
+
+}
+
+structure Circuit : CircVoc {
+    Wire = { K; L; M; N; O; P; Q; R; }
+    Gate = { A; B; C; D; E; }
+    Output = { A -> N; B -> P; C -> O; D -> Q; E -> R; }
+    FirstInput = { A -> K; B -> N; C -> L; D -> M; E -> Q; }
+    SecondInput = { A -> L; B -> M; C -> K; D -> N; E -> O; }
+    Xor = { A; B; }
+    And = { C; D; }
+    Or = { E; }
+}
+
+theory CircTh : CircVoc {
+
+}
+
+procedure main() {
+    stdoptions.nbmodels = 1 
+    printmodels(modelexpand(CircTh, Circuit))
+}

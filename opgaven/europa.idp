@@ -1,0 +1,43 @@
+/*  
+ * europa.idp
+ * 
+ */
+
+structure S_euro : V {
+	Kleur = { Rood; Oranje; Geel; Groen; Blauw; Paars; }
+    
+	Land = { 
+        Albanie; Belgie; BosnieHerz; Bulgarije; Denemarken; Duitsland; Estland; 
+        Finland; Frankrijk; Griekenland; Hongarije; Ierland; IJsland; Italie; 
+        Kroatie; Letland; Litouwen; Luxemburg; Macedonie; Moldavie; Montenegro; 
+        Nederland; Noorwegen; Oekraine; Oostenrijk; Polen; Portugal; Roemenie; 
+        Servie; Slovenie; Slowakije; Spanje; Tsjechie; VerenigdK; WitRusland; 
+        Zweden; Zwitserland;	
+    }
+    
+	Grens = {
+        (Noorwegen,Zweden); (Noorwegen,Finland); (Zweden,Finland);
+        (Ierland, VerenigdK); (Denemarken, Duitsland); (Estland, Letland); 
+        (Letland, WitRusland); (Letland, Litouwen); (Litouwen, WitRusland);
+        (Litouwen, Polen); (Nederland,Duitsland); (Nederland,Belgie); 
+        (Belgie,Duitsland); (Belgie,Luxemburg); (Belgie,Frankrijk);
+        (Luxemburg, Duitsland); (Luxemburg,Frankrijk); (Duitsland,Polen); 
+        (Duitsland,Tsjechie); (Duitsland,Oostenrijk); (Duitsland,Zwitserland); 
+        (Polen, WitRusland); (Polen, Oekraine); (Polen,Tsjechie); 
+        (Polen,Slowakije); (WitRusland,Oekraine); (Tsjechie,Slowakije); 
+        (Tsjechie,Oostenrijk); (Slowakije,Oekraine); (Slowakije,Hongarije); 
+        (Oekraine,Moldavie); (Oekraine,Roemenie);(Frankrijk,Duitsland); 
+        (Frankrijk,Zwitserland); (Frankrijk,Italie); (Frankrijk,Spanje); 
+        (Zwitserland,Oostenrijk); (Zwitserland,Italie); (Oostenrijk,Slowakije); 
+        (Oostenrijk,Hongarije); (Oostenrijk,Slovenie); (Oostenrijk,Italie); 
+        (Italie,Slovenie); (Slovenie,Hongarije); (Slovenie,Kroatie); 
+        (Hongarije,Oekraine); (Hongarije,Roemenie); (Hongarije,Servie); 
+        (Hongarije,Kroatie); (Kroatie,Servie); (Kroatie,BosnieHerz); 
+        (Kroatie,Montenegro); (BosnieHerz,Servie); (BosnieHerz,Montenegro); 
+        (Montenegro,Servie); (Montenegro,Albanie); (Servie,Roemenie); 
+        (Servie,Bulgarije); (Servie,Macedonie); (Roemenie,Moldavie); 
+        (Roemenie,Bulgarije); (Albanie,Macedonie); (Albanie,Griekenland); 
+        (Macedonie,Bulgarije); (Macedonie,Griekenland); (Bulgarije,Griekenland); 
+        (Portugal,Spanje); 
+	}
+}

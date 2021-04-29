@@ -1,0 +1,23 @@
+/*  
+ * octaal.idp
+ *
+ */
+ 
+vocabulary V {
+    type Octaal isa int
+    Cijfer1: Octaal
+    Cijfer2: Octaal
+} 
+
+structure S : V {
+    Octaal = { 0; 1; 2; 3; 4; 5; 6; 7; }
+}
+
+theory T : V {
+    Cijfer1 * 8 + Cijfer2 = 25.
+}
+
+procedure main() {		
+    models = modelexpand(T,S)
+    printmodels(models)
+}

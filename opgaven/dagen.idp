@@ -1,0 +1,25 @@
+/*  
+ * dagen.idp
+ *
+ */
+
+vocabulary V {
+    type Dag
+    Kerstmis: Dag
+    Nieuwjaar: Dag
+} 
+
+structure S : V {
+    Dag = { Maandag; Dinsdag; Woensdag; Donderdag; Vrijdag; Zaterdag; Zondag; }
+    Kerstmis = Maandag
+}
+
+theory T : V {
+	
+}
+
+procedure main() {
+    stdoptions.nbmodels = 0			
+    models = modelexpand(T,S)
+    printmodels(models)
+}

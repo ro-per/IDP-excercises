@@ -1,0 +1,25 @@
+/* 
+ * diet.idp
+ *
+ */
+
+vocabulary V {
+
+} 
+
+structure S : V {
+
+}
+
+theory T : V {
+	// Elke letter stelt een verschillend cijfer voor
+	L ~= E & L ~= S & L ~= F & L ~= O & L ~= D & L ~= I & L ~= T 
+	& E ~= S & E ~= F & E ~= O & E ~= D & E ~= I & E ~= T & S ~= F 
+	& S ~= O & S ~= D & S ~= I & S ~= T & F ~= O & F ~= D & F ~= I 
+	& F ~= T & O ~= D & O ~= I & O ~= T & D ~= I & D ~= T & I ~= T.
+}
+
+procedure main() {	
+    stdoptions.nbmodels = 0
+    printmodels(modelexpand(T, S))	
+}

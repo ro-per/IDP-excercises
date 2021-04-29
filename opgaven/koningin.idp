@@ -1,0 +1,27 @@
+/*  
+ * koningin.idp
+ *
+ */
+ 
+vocabulary V {
+    type Rij isa nat
+    type Kolom isa nat
+
+    Koningin(Rij, Kolom)
+    Slaan(Rij, Kolom, Rij, Kolom)
+}
+
+structure S : V {
+    Rij = {1..8}
+    Kolom = {1..8}
+}
+
+theory T : V{
+    #{r k: Koningin(r,k)} = 8.
+    !r1 r2 k1 k2: (r1~=r2|k1~=k2) & Koningin(r1,k1) & Koningin(r2,k2) 
+												=> ~Slaan(r1, r2, k1, k2). 
+}
+
+procedure main(){
+    printmodels(modelexpand(T,S))
+}
