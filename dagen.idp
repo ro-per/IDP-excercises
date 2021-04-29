@@ -1,0 +1,53 @@
+vocabulary V {
+    /* ----- TYPE ----- */
+    // Oefening 8
+    //type Dag
+    // Oefening 11
+    type Dag constructed from {Maandag,Dinsdag,Woensdag ,Donderdag,Vrijdag,Zaterdag,Zondag }
+    
+    /* ----- CONSTANTE ----- */
+    // Oefening 8
+    Kerstmis: Dag
+    Nieuwjaar : Dag
+    
+    //Oefening 9
+    Pasen : Dag
+    
+    /* ----- RELATIE ----- */
+    // Oefening 9
+    Weekend(Dag)
+    
+}
+
+structure S: V {
+    // Oefening 8
+    //Dag = { Maandag; Dinsdag; Woensdag; Donderdag ;Vrijdag; Zaterdag ; Zondag }
+    Kerstmis = Maandag
+    
+    
+    // Oefening 9
+    Weekend = { Zaterdag ; Zondag }
+    
+    
+    
+}
+
+
+theory T: V{
+    // Oefening 8
+    Dag(Nieuwjaar).
+    Kerstmis = Nieuwjaar.
+    
+    // Oefening 9
+    Weekend(Pasen).
+    
+    // Oefening 10
+    Pasen~=Zaterdag.
+}
+
+
+procedure main() {
+    // Oefening 8
+    stdoptions .nbmodels = 7
+    printmodels(modelexpand(T, S))
+}
