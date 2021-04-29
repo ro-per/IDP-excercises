@@ -6,7 +6,7 @@
 vocabulary V {
     /* ----- TYPE ----- */
     type Docent constructed from { GVB , IMA , LDS }
-    type Vak constructed from {ArtificieleInt,BedrijfsBeleid,    BeslissingsAlg,ComputerArch }
+    type Vak constructed from {ArtificieleInt,BedrijfsBeleid,BeslissingsAlg,ComputerArch }
     
     /* ----- CONSTANTE ----- */
     // Oefening 12
@@ -24,12 +24,17 @@ structure S: V {
                 GVB , BeslissingsAlg ;
                 IMA , BedrijfsBeleid ;
                 LDS , ComputerArch ; }
+    
+    Gemakkelijk={
+        ArtificieleInt;
+        BeslissingsAlg;
+    }
 }
 
 theory T: V{
     // Oefening 12
-    Geeft(GVB,BuisVak).
-    
+    Geeft(LDS,BuisVak).
+        
     // Oefening 13
     !doc: ?vak: Geeft(doc,vak).
     
@@ -37,10 +42,10 @@ theory T: V{
     !vak: ?doc: Geeft(doc,vak).
     
     // Oefening 15    
-    //?vak: Geeft(GVB, vak) & Gemakkelijk(vak).
+    ? vak: Geeft(GVB, vak) => Gemakkelijk(vak).
     
     // Oefening 16
-    ?vak: Geeft(GVB, vak) => Gemakkelijk(vak).
+    !vak: Geeft(GVB, vak) => Gemakkelijk(vak).
     
     // Oefening 17
     //! vak: Geeft(LDS, vak) => ~Gemakkelijk(vak).
