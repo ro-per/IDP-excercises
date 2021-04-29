@@ -1,0 +1,22 @@
+vocabulary V {
+    X
+    Y
+    Z
+}
+
+
+structure S: V {
+    X = true
+    Y = true
+    Z = true
+}
+
+
+theory T: V {    
+    (~X & Y & Z) | (X & ~Y & Z) | (X & Y & ~Z).
+}
+
+
+procedure main() {
+    print(sat(T, S))
+}
