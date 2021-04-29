@@ -1,0 +1,27 @@
+vocabulary V {
+    A
+    B
+    C
+}
+structure S: V {
+    // Oefening 1
+    A = true
+    B = false
+    C = false
+    
+    //Oefening 2
+    //A = true
+    //B = true
+    //C = false
+    
+    // Oefening 3
+    //A = true
+    //B = false
+    //C = true
+}
+theory T: V {
+    A & (B | ~C).
+}
+procedure main() {
+    print(sat(T, S))
+}
