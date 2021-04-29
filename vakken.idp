@@ -1,0 +1,50 @@
+vocabulary V {
+    /* ----- TYPE ----- */
+    type Docent constructed from { GVB , IMA , LDS }
+    type Vak constructed from {ArtificieleInt,BedrijfsBeleid,    BeslissingsAlg,ComputerArch }
+    
+    /* ----- CONSTANTE ----- */
+    // Oefening 12
+    BuisVak : Vak
+    
+    
+    /* ----- RELATIE ----- */
+    Geeft(Docent , Vak)
+    
+    // Oefening 15
+    Gemakkelijk(Vak)
+}
+structure S: V {
+    Geeft = { 	GVB , ArtificieleInt ;
+                GVB , BeslissingsAlg ;
+                IMA , BedrijfsBeleid ;
+                LDS , ComputerArch ; }
+}
+
+theory T: V{
+    // Oefening 12
+    Geeft(GVB,BuisVak).
+    
+    // Oefening 13
+    !doc: ?vak: Geeft(doc,vak).
+    
+    // Oefening 14
+    !vak: ?doc: Geeft(doc,vak).
+    
+    // Oefening 15    
+    //?vak: Geeft(GVB, vak) & Gemakkelijk(vak).
+    
+    // Oefening 16
+    ?vak: Geeft(GVB, vak) => Gemakkelijk(vak).
+    
+    // Oefening 17
+    //! vak: Geeft(LDS, vak) => ~Gemakkelijk(vak).
+	~?vak: Geeft(LDS, vak) & Gemakkelijk(vak).
+        
+}
+
+
+procedure main() {
+    stdoptions .nbmodels = 0
+    printmodels(modelexpand(T, S))
+}
