@@ -1,0 +1,56 @@
+Number of models: 7
+Model 1
+=======
+structure  : V {
+  Dag = { "Dinsdag"; "Donderdag"; "Maandag"; "Vrijdag"; "Woensdag"; "Zaterdag"; "Zondag" }
+  Kerstmis = "Maandag"
+  Nieuwjaar = "Dinsdag"
+}
+
+Model 2
+=======
+structure  : V {
+  Dag = { "Dinsdag"; "Donderdag"; "Maandag"; "Vrijdag"; "Woensdag"; "Zaterdag"; "Zondag" }
+  Kerstmis = "Maandag"
+  Nieuwjaar = "Woensdag"
+}
+
+Model 3
+=======
+structure  : V {
+  Dag = { "Dinsdag"; "Donderdag"; "Maandag"; "Vrijdag"; "Woensdag"; "Zaterdag"; "Zondag" }
+  Kerstmis = "Maandag"
+  Nieuwjaar = "Vrijdag"
+}
+
+Model 4
+=======
+structure  : V {
+  Dag = { "Dinsdag"; "Donderdag"; "Maandag"; "Vrijdag"; "Woensdag"; "Zaterdag"; "Zondag" }
+  Kerstmis = "Maandag"
+  Nieuwjaar = "Maandag"
+}
+
+Model 5
+=======
+structure  : V {
+  Dag = { "Dinsdag"; "Donderdag"; "Maandag"; "Vrijdag"; "Woensdag"; "Zaterdag"; "Zondag" }
+  Kerstmis = "Maandag"
+  Nieuwjaar = "Donderdag"
+}
+
+Model 6
+=======
+structure  : V {
+  Dag = { "Dinsdag"; "Donderdag"; "Maandag"; "Vrijdag"; "Woensdag"; "Zaterdag"; "Zondag" }
+  Kerstmis = "Maandag"
+  Nieuwjaar = "Zaterdag"
+}
+
+Model 7
+=======
+structure  : V {
+  Dag = { "Dinsdag"; "Donderdag"; "Maandag"; "Vrijdag"; "Woensdag"; "Zaterdag"; "Zondag" }
+  Kerstmis = "Maandag"
+  Nieuwjaar = "Zondag"
+}

@@ -1,0 +1,23 @@
+vocabulary V {
+    type Dag
+    Kerstmis: Dag
+    Nieuwjaar : Dag
+}
+
+structure S: V {
+    Dag = { Maandag; Dinsdag; Woensdag; Donderdag ;Vrijdag; Zaterdag ; Zondag }
+    
+    Kerstmis = Maandag
+}
+
+theory T: V{
+    Dag(Nieuwjaar).
+    
+    Kerstmis = Nieuwjaar.	
+}
+
+
+procedure main() {
+    stdoptions .nbmodels = 7
+    printmodels(modelexpand(T, S))
+}
