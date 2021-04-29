@@ -34,6 +34,4 @@ procedure main() {
     print(sat(T6, S))
     print(sat(T7, S))
     print(sat(T8, S))
-
-    //printmodels(modelexpand(T, S))
 }
