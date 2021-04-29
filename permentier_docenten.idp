@@ -32,6 +32,10 @@ theory T : V {
     
     // Elke docent behalve IMA geeft min 2 vakken
     ! doc[Docent]: (doc~=IMA) => (2 =< #{vak[Vak]:Geeft(doc,vak)}).
+    
+    
+    // Totaal SP van vakken door docent gegeven <=10
+    ! doc[Docent]: sum{vak[Vak]:Geeft(doc,vak):Punten(vak)} =<10.
 	
 }
 
