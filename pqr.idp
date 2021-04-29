@@ -1,0 +1,24 @@
+vocabulary V {
+    P
+    Q
+    R
+}
+
+
+structure S: V {
+    R = false
+}
+
+
+theory T: V{(P => Q) <=>(P<= R).}
+
+
+procedure main() {
+    // Oefening 6
+	printmodels(modelexpand(T, S))
+    
+    // Oefening 7
+    stdoptions .nbmodels = 0
+    printmodels(modelexpand(T, S))
+   
+}
