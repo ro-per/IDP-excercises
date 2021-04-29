@@ -1,0 +1,10 @@
+Number of models: 1
+Model 1
+=======
+structure  : V {
+  Weekend = { Zaterdag; Zondag }
+  Kerstmis = Maandag
+  Nieuwjaar = Maandag
+  Pasen = Zondag
+}
+

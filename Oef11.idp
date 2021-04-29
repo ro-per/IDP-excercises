@@ -1,0 +1,36 @@
+vocabulary V {
+    //TYPE
+   type Dag constructed from {Maandag,Dinsdag,Woensdag ,Donderdag,Vrijdag,Zaterdag,Zondag }
+    
+   	//CONSTANTE
+    Kerstmis: Dag
+    Nieuwjaar : Dag
+    Pasen : Dag
+    
+    // RELATIE
+    Weekend(Dag)
+
+}
+
+structure S: V {
+    
+    Weekend = { Zaterdag ; Zondag }
+    
+    Kerstmis = Maandag
+}
+
+theory T: V{
+    Dag(Nieuwjaar).
+    
+    Kerstmis = Nieuwjaar.	
+    
+    Weekend(Pasen).
+    
+    Pasen~=Zaterdag.
+}
+
+
+procedure main() {
+    stdoptions .nbmodels = 7
+    printmodels(modelexpand(T, S))
+}
