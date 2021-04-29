@@ -1,0 +1,62 @@
+/*
+ * permentier_diet.idp
+ * Romeo Permentier
+ * 29/04/2021
+ */
+
+vocabulary V {
+    /* ----- TYPE ----- */
+    type Letter isa int    
+    
+    /* ----- CONSTANTE ----- */
+    L : Letter
+    E : Letter
+    S : Letter
+    F : Letter
+    O : Letter
+    D : Letter
+    I : Letter
+    T : Letter
+    
+    
+    /* ----- RELATIE ----- */
+
+    
+    /* ----- FUNCTIE ----- */
+
+} 
+
+structure S : V {
+    // Elke letter stelt een cijfer van 0 t/m 9 voor
+    Letter = {0..9}
+    
+    E = 6
+    S = 2
+    F = 1
+    T = 9
+}
+
+theory T : V {
+    // Elke letter stelt een verschillend cijfer voor
+	L ~= E & L ~= S & L ~= F & L ~= O & L ~= D & L ~= I & L ~= T 
+	& E ~= S & E ~= F & E ~= O & E ~= D & E ~= I & E ~= T & S ~= F 
+	& S ~= O & S ~= D & S ~= I & S ~= T & F ~= O & F ~= D & F ~= I 
+	& F ~= T & O ~= D & O ~= I & O ~= T & D ~= I & D ~= T & I ~= T.
+    
+    // Een getal mag nooit beginnen met het cijfer nul.
+    L ~=0.
+    F ~=0.
+    D ~=0.
+    
+    // Puzzel
+    L + F = D.
+    E + O = I.
+    S + O = E.
+    S + D = T.    
+    
+}
+
+procedure main() {	
+    stdoptions.nbmodels = 10
+    printmodels(modelexpand(T, S))	
+}
