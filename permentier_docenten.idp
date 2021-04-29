@@ -1,0 +1,41 @@
+/*
+ * permentier_docenten.idp
+ * Romeo Permentier
+ * 29/04/2021
+ */
+
+vocabulary V {
+    type Docent constructed from { GVB, IMA, LDS } 
+    type Vak constructed from { AI, BB, BA, CA, MC }
+    Geeft(Docent, Vak)	
+
+    type StudiePunten isa int
+    Punten(Vak): StudiePunten
+} 
+
+structure S : V {
+    StudiePunten = { 0..10 }
+    Punten = { AI -> 6; BB -> 6; BA -> 4; CA -> 5; MC -> 5; }
+}
+
+theory T : V {
+    // Elke Vak geeft 1 docent
+    ! vak[Vak]: 1 = #{doc[Docent]:Geeft(doc,vak)}.
+    
+    // LDS geeft CA
+    Geeft(LDS,CA).
+    
+    // GVB geeft niet BB MC
+    0 = #{ vak[Vak]:Geeft(GVB,vak) & (vak=BB | vak=MC)}.
+    
+    
+    
+    // Elke docent behalve IMA geeft min 2 vakken
+    ! doc[Docent]: (doc~=IMA) => (2 =< #{vak[Vak]:Geeft(doc,vak)}).
+	
+}
+
+procedure main() {
+    stdoptions.nbmodels = 0
+    printmodels(modelexpand(T,S))
+}
