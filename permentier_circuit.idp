@@ -1,0 +1,56 @@
+/*
+ * permentier_circuit.idp
+ * Romeo Permentier
+ * 06/05/2021
+ */
+
+vocabulary CircVoc {
+    /* ----- TYPE ----- */
+    type Wire
+    type Gate
+    
+    /* ----- CONSTANTE ----- */
+
+    /* ----- RELATIE ----- */
+    // Oef 1
+    Xor(Gate)
+    And(Gate)
+    Or(Gate)
+    // Oef 2
+    On(Wire)
+    
+    /* ----- FUNCTION ----- */
+    // Oef 1
+    Output(Gate):Wire
+    FirstInput(Gate):Wire
+    SecondInput(Gate):Wire
+
+}
+
+structure Circuit : CircVoc {
+    /* ----- TYPE ----- */    
+    Wire = { K; L; M; N; O; P; Q; R; }
+    Gate = { A; B; C; D; E; }
+    
+    /* ----- RELATIE ----- */    
+    Xor = { A; B; }
+    And = { C; D; }
+    Or = { E; }
+    // Oef 2
+    On = {K;M}
+    
+    /* ----- FUNCTION ----- */
+    Output = { A -> N; B -> P; C -> O; D -> Q; E -> R; }
+    FirstInput = { A -> K; B -> N; C -> L; D -> M; E -> Q; }
+    SecondInput = { A -> L; B -> M; C -> K; D -> N; E -> O; }
+}
+
+theory CircTh : CircVoc {
+
+
+}
+
+procedure main() {
+    stdoptions.nbmodels = 1 
+    printmodels(modelexpand(CircTh, Circuit))
+}
