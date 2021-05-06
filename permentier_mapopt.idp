@@ -19,7 +19,7 @@ vocabulary V {
     /* ----- FUNCTIE ----- */
     ToegekendeKleur(Land): Kleur
 }
-
+/*
 structure S1 : V {
 	Kleur = { Rood; Oranje; Geel; Groen; Blauw}
 	Land = { Belgie; Nederland; Duitsland; Luxemburg; Frankrijk; Zwitserland; Oostenrijk }
@@ -42,6 +42,10 @@ structure S2 : V {
     
     Aantal = {0..5}
 }
+*/
+
+include "europa.idp"
+
 
 theory T : V {
     
@@ -59,6 +63,6 @@ term t: V{
 
 procedure main() {
     stdoptions.nbmodels = 100
-    printmodels ( minimize (T, S2,t))
+    printmodels ( minimize (T, S_euro,t))
     print(AantalKleuren)
 }

@@ -4,7 +4,7 @@
  */
 
 structure S_euro : V {
-    Aantal = {0..5}
+	Aantal = {0..5}
 	Kleur = { Rood; Oranje; Geel; Groen; Blauw; Paars; }
     
 	Land = { 
