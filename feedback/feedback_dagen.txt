@@ -1,0 +1,1 @@
+Dag(Nieuwjaar) is overbodig bij oefening 8 aangezien Nieuwjaar sowieso van het type Dag is.

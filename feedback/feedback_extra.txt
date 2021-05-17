@@ -1,0 +1,4 @@
+De extra oefeningen bij diet.idp en cde.idp hoeven jullie niet te maken. 
+Het is de bedoeling dat de verschillende constanten gebruikt om letters voor te stellen worden vervangen door een functiesymbool met als argument de letter.  
+Moesten jullie ondertussen iets meer vertrouwd zijn met het gebruik van functiesymbolen en het nog eens willen proberen, laat het dan zeker weten als het nog niet zou lukken. 
+Dan help ik jullie dan zeker verder.

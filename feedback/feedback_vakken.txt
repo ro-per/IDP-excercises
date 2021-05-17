@@ -1,0 +1,5 @@
+Deze constructie werkt niet:
+
+    ? vak: Geeft(GVB, vak) => Gemakkelijk(vak).
+
+Ze is verre van beperkend. Als je bekijkt dat dit wil zeggen dat er een vak bestaat dat ofwel Gemakkelijk is ofwel niet door GVB gegeven wordt (?v:Gemakkelijk(v)|~Geeft(GVB,v)), dan heb je waarschijnlijk alle vakken die hieraan voldoen en dat is niet wat we willen zeggen.

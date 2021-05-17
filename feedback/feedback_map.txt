@@ -1,0 +1,1 @@
+Je definieert een relatie ToegekendeKleur(Land, Kleur) en gaat dan logisch de beperkingen neerschrijven. De tips helpen jullie opweg. 
