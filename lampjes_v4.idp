@@ -93,19 +93,15 @@ theory Theo : Voc {
     
 //D.AAN ELK OBSTAKEL MOET HET JUIST AANTAL LAMPEN STAAN
     
+     // r1,k1 = midden
+    // r2,k2 = grenzend vakje
+    
+    ! r1[R],k1[K],g[Getal]: #{r2[R],k2[K]:Grens(r1,k1,r2,k2)& Obstakel(r1,k1,g) & Lamp(r2,k2)}=g.
     
   
     
-    // r1,k1 = midden
-    // r2,k2 = grenzend vakje
-     /*
-    #{r1[R], k1[K],r2[R], k2[K]: Lamp(r2,k2) & Grens(r1,k1,r2,k2) & Obstakel(r1,k1,Getal)} = 
+
     
-    
-    #{g:Obstakel(r1,k1,g)}
-    
-    .
-    */
     
     
 }
