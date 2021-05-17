@@ -29,8 +29,8 @@ structure S : V {
 
 theory T : V {
 	{
-        !ouder kind: Voorouder(ouder, kind) <- Ouder(ouder, kind).
         !voorouder ouder: Voorouder(voorouder, ouder) <- ?p3: Voorouder(voorouder, p3) & Voorouder(p3,ouder).
+        !ouder kind: Voorouder(ouder, kind) <- Ouder(ouder, kind).
     }
 }
 

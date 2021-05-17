@@ -51,8 +51,6 @@ theory T : V{
         	abs(r1-r2) = abs(k1-k2) 
         	& 
         	Q(r1,k1) & Q(r2,k2).
-
-       
     }
 }
 

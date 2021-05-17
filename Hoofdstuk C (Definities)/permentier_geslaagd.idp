@@ -47,8 +47,6 @@ theory T2 : V {
     !vak: Geslaagd(vak) <- ExamenResultaat(vak) >= 8 & ExamenResultaat(vak) < 10 & Getolereerd(vak).
 
     }
-    
-	
 }
 
 procedure main() {

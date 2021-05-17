@@ -33,7 +33,7 @@ theory Th_fib : V {
     
     //VERBAND TUSSEN INDEXEN LEGGEN
     {
-        !i1[I] i2[I] i3: Fib(i1, i2, i3) <- (i1+2 = i3) & (i2+1 = i3).
+        !i1[I] i2[I] i3: Fib(i1, i2, i3) <-  (i2+1 = i3) & (i1+2 = i3).
     }
 }
 

@@ -76,7 +76,7 @@ theory THEO : CircVoc {
     !gate: AND(gate) & ~Broken(gate) => (On(In1(gate))& On(In2(gate)) <=> On(Out(gate))).
     //OR
     !gate: OR(gate)& ~Broken(gate) => (On(In1(gate)) | On(In2(gate)) <=> On(Out(gate))).
-	// XOR
+	//XOR
     !gate: XOR(gate)& ~Broken(gate) => ( 
     	(On(In1(gate)) & ~On(In2(gate)) ) 	
 		| 

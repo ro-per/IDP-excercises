@@ -3,7 +3,6 @@
  * Romeo Permentier
  * 17/05/2021
  */
-
 vocabulary CircVoc {
     /* ----- TYPE ----- */
     type Wire

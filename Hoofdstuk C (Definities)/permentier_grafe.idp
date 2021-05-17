@@ -29,9 +29,8 @@ structure S : V {
 
 Theory T : V {
    {
-        !k1 k2: Bereikt(k2) <- Boog(k1, k2).
-        
-   		!k1 k2: Bereikt(k2) <- ?k3: Boog(k1,k3) & Boog(k3,k2).     
+   	    !k1 k2: Bereikt(k2) <- ?k3: Boog(k1,k3) & Boog(k3,k2).
+        !k1 k2: Bereikt(k2) <- Boog(k1, k2).   
    }
 }
 
