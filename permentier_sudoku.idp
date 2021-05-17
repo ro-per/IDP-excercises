@@ -1,0 +1,63 @@
+/*
+ * permentier_sudoku.idp
+ * Romeo Permentier
+ * 17/05/2021
+ */
+vocabulary V {
+    type R isa nat
+    type K isa nat
+    type Getal isa nat
+    type Vak isa nat
+
+    SUDOKU(R, K, Getal)
+    Oplossing(R, K): Getal
+    Vierkant(R, K, R, K)
+}
+
+structure S : V {
+    R = {1..9}
+    K = {1..9}
+    Getal = {1..9}
+    Vak = {1..9}
+
+    SUDOKU = {
+        (1, 2, 2); (1, 4, 3);
+        (2, 1, 7); (2, 2, 1); (2, 6, 9); (2, 7, 3);
+        (3, 2, 3); (3, 3, 4); (3, 4, 5); (3, 8, 7);
+        (4, 1, 9); (4, 4, 6); 
+        (5, 2, 4); (5, 8, 6);
+        (6, 6, 4); (6, 9, 9);
+        (7, 2, 8); (7, 6, 6); (7, 7, 7); (7, 8, 4);
+        (8, 3, 3); (8, 4, 4); (8, 8, 5); (8, 9, 8);
+        (9, 6, 1); (9, 8, 9);
+    }
+    
+    // Moeilijke sudoku, met dank aan Simon.
+    // Gegeven = { (1,1,8); (2,3,3); (2,4,6); (3,2,7); (3,5,9); (3,7,2); (4,2,5); (4,6,7); (5,5,4); (5,6,5); (5,7,7); (6,4,1); (6,8,3); (7,3,1); (7,8,6); (7,9,8); (8,3,8); (8,4,5); (8,8,1); (9,2,9); (9,7,4); }
+}
+
+theory T : V {
+    // Vierkant vullen
+    {	// Dit is echt het lelijkste stuk code dat ik ooit heb geschreven.
+        !r1, k1, r2, k2: Vierkant(r1, k1, r2, k2) <-
+        	~(r1 = r2 & k1 = k2) &
+        	// Al dit om een int deling te kunnen doen. (r1/3 = r2/3)
+        	r1 - (r1-1)%3 = r2 - (r2-1)%3 & 
+        	k1 - (k1-1)%3 = k2 - (k2-1)%3.
+    }
+    
+    // Gegeven -> Oplossing
+    !r, k, g: SUDOKU(r, k, g) => Oplossing(r, k) = g.
+    
+    // In vierkant
+    !r1, k1, r2, k2: Vierkant(r1, k1, r2, k2) => Oplossing(r1, k1) ~= Oplossing(r2, k2).
+    // Rows & Cols
+    !k, g: ?1r: Oplossing(r, k) = g.
+    !r, g: ?1k: Oplossing(r, k) = g.
+    
+}
+
+procedure main() {
+    stdoptions.nbmodels = 5
+    printmodels(modelexpand(T,S))
+}
