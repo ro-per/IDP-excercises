@@ -1,0 +1,103 @@
+/*
+ * permentier_circuit.idp
+ * Romeo Permentier
+ * 06/05/2021
+ */
+
+vocabulary CircVoc {
+    /* ----- TYPE ----- */
+    type Wire
+    type Gate
+    
+    /* ----- CONSTANTE ----- */
+
+    /* ----- RELATIE ----- */
+    // Oef 1
+    XOR(Gate)
+    AND(Gate)
+    OR(Gate)
+    // Oef 2
+    On(Wire)
+    // Oef 4
+    InputWire(Wire)
+    // Oef 5
+    InputWireOn(Wire)
+    // Oef 7
+    OutputWire(Wire)
+    OutputWireOn(Wire)
+    // Oef 9
+    ObservedOn(Wire)
+    ObservedOff(Wire)
+    
+    /* ----- FUNCTION ----- */
+    // Oef 1
+    Out(Gate):Wire
+    In1(Gate):Wire
+    In2(Gate):Wire
+
+}
+
+structure Circuit : CircVoc {
+    /* ----- TYPE ----- */    
+    Wire = { K; L; M; N; O; P; Q; R; }
+    Gate = { A; B; C; D; E; }
+    
+    /* ----- RELATIE ----- */    
+    XOR = { A; B; }
+    AND = { C; D; }
+    OR = { E; }
+    // Oef 2
+    //On = {K;M;N;Q;R}
+    // Oef 4
+    InputWire= {K;L;M;}
+    InputWireOn = {K;M}
+    // Oef 7
+    //OutputWire= {P;R}
+    //OutputWireOn = {P;R}
+    
+    // Oef 10
+    ObservedOn = {N;}
+    ObservedOff = {Q;}
+    
+    /* ----- FUNCTION ----- */
+    Out = { A -> N; B -> P; C -> O; D -> Q; E -> R; }
+    In1 = { A -> K; B -> N; C -> L; D -> M; E -> Q; }
+    In2 = { A -> L; B -> M; C -> K; D -> N; E -> O; }
+}
+
+theory CircTh : CircVoc {
+    // Oef3
+    //AND
+    !gate: AND(gate) => (On(In1(gate))& On(In2(gate)) <=> On(Out(gate))).
+    //OR
+    !gate: OR(gate) => (On(In1(gate)) | On(In2(gate)) <=> On(Out(gate))).
+	// XOR
+    !gate: XOR(gate) => ( 
+    						(
+    							On(In1(gate)) & ~On(In2(gate)) 
+    						) 	
+    						| 
+    						(
+    							~On(In1(gate)) & On(In2(gate))
+    						) 
+    					 	
+    					<=> On(Out(gate))
+    					).
+    
+    // Oef 6: Als het ene inputwire is DAN geldt ... 
+    //!wire: InputWire(wire) => (InputWireOn(wire) <=> On(wire)).
+
+    // Oef 8: 
+    !wire: OutputWire(wire) => (OutputWireOn(wire) <=> On(wire)).
+    
+    // Oef 9
+    !x [Wire]: ObservedOn(x) => On(x).
+    !x [Wire]: ObservedOff(x) => ~On(x).
+	
+
+}
+
+procedure main() {
+    stdoptions.nbmodels = 100
+    printmodels(modelexpand(CircTh, Circuit))
+}

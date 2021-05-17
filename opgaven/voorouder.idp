@@ -1,0 +1,27 @@
+/*  
+ * voorouder.idp
+ * 
+ * 
+ */
+ 
+vocabulary V {
+    type Persoon
+    Ouder(Persoon,Persoon)
+    Voorouder(Persoon, Persoon)
+} 
+
+structure S : V {
+  
+}
+
+theory T : V {
+{
+	! p1 p2: Voorouder(p1, p2) <- Ouder(p1, p2).
+	! p1 p2: Voorouder(p1, p2) <- ?p3: Voorouder(p1, p3) & Voorouder(p3, p2).
+}
+}
+
+procedure main() {
+    stdoptions.nbmodels = 3
+    printmodels(modelexpand(T,S))
+}

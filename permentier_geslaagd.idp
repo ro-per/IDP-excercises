@@ -1,0 +1,57 @@
+/*
+ * permentier_geslaagd.idp
+ * Romeo Permentier
+ * 17/05/2021
+ */
+ 
+vocabulary V {
+    /* ----- TYPE ----- */
+    type Vak
+    type Score isa nat
+    /* ----- CONSTANTE ----- */
+    
+    /* ----- RELATIE ----- */
+    Geslaagd(Vak)
+    Getolereerd(Vak)
+
+    /* ----- FUNCTION ----- */
+    ExamenResultaat(Vak): Score
+} 
+
+structure S : V {
+    Vak = { AI; BB; CA; }
+    Score = { 0 .. 20 }
+    ExamenResultaat = {	AI -> 12; BB -> 8; CA -> 17; }
+    
+    //Getolereerd = {BB;}
+}
+
+theory T1 : V {
+    // OEF 1 + 3
+     !vak [Vak] : Geslaagd(vak) 
+    	<=>
+    	( ExamenResultaat(vak) > 10) 
+    	| 
+    	( 10 > ExamenResultaat(vak) >= 8 & Getolereerd(vak)).
+       
+	
+}
+
+theory T2 : V {
+    
+    // ÉÉN grote OR van alle lijnen
+    {
+    //OEF 2
+     !vak [Vak] : Geslaagd(vak) <- ExamenResultaat(vak) > 10.
+    //OEF 3
+    !vak: Geslaagd(vak) <- ExamenResultaat(vak) >= 8 & ExamenResultaat(vak) < 10 & Getolereerd(vak).
+
+    }
+    
+	
+}
+
+procedure main() {
+    stdoptions.nbmodels = 0
+    printmodels(modelexpand(T2,S))
+}

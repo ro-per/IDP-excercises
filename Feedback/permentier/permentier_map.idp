@@ -1,0 +1,47 @@
+/*
+ * permentier_map.idp
+ * Romeo Permentier
+ * 05/05/2021
+ */
+
+vocabulary V{
+    /* ----- TYPE ----- */
+    type Kleur
+    type Land
+    /* ----- CONSTANTE ----- */
+    
+    
+    /* ----- RELATIE ----- */
+    Grens(Land, Land)
+    ToegekendeKleur(Land, Kleur)
+}
+
+structure S: V {
+   Kleur = { Rood; Oranje; Geel; Groen; Blauw }
+	Land = { Belgie; Nederland; Duitsland; Luxemburg; Frankrijk; Zwitserland; Oostenrijk }
+	Grens = { 
+		(Nederland,Belgie); 	 (Nederland,Duitsland);  (Belgie,Frankrijk);
+		(Belgie,Luxemburg); 	 (Belgie,Duitsland); 	 (Luxemburg,Frankrijk); 
+		(Luxemburg, Duitsland);  (Frankrijk,Duitsland);  (Frankrijk,Zwitserland); 
+		(Duitsland,Zwitserland); (Duitsland,Oostenrijk); (Zwitserland,Oostenrijk); 
+    }
+}
+
+theory T: V {
+    // grenzende landen niet dezelfde kleur (opdracht)
+    ?land1[Land] land2[Land] : !kleur1[Kleur] kleur2[Kleur]:  (Grens(land1, land2) & kleur1 ~= kleur2) => (ToegekendeKleur(land1, kleur1) & ToegekendeKleur(land2, kleur2)). //KVD/ Deze klopt nog niet, zie feedback labo 1
+    
+    
+    // Elk land moet een kleur hebben (tip1)
+    !land[Land] : ?kleur[Kleur] : ToegekendeKleur(land, kleur). 
+    
+    // Elke land max 1 kleur (tip2)
+    !land[Land] kleur1[Kleur] kleur2[Kleur]: ToegekendeKleur(land, kleur1) & ToegekendeKleur(land, kleur2) => kleur1 = kleur2.
+    
+}
+
+procedure main() {
+    stdoptions.nbmodels = 3
+    printmodels(modelexpand(T,S))
+}
+

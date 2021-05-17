@@ -1,63 +1,69 @@
 /*
  * permentier_circuitdiag.idp
  * Romeo Permentier
- * 06/05/2021
+ * 17/05/2021
  */
 
 vocabulary CircVoc {
     /* ----- TYPE ----- */
     type Wire
     type Gate
+    type Aantal isa int
     
     /* ----- CONSTANTE ----- */
+    nrBroken: Aantal
 
     /* ----- RELATIE ----- */
-    // Oef 1
     XOR(Gate)
     AND(Gate)
     OR(Gate)
-    // Oef 2
+
     On(Wire)
-    // Oef 4
+
     InputWire(Wire)
-    // Oef 5
     InputWireOn(Wire)
-    // Oef 7
+
     OutputWire(Wire)
     OutputWireOn(Wire)
-    // Oef 9
+
     ObservedOn(Wire)
     ObservedOff(Wire)
+
+    Broken(Gate)
     
     /* ----- FUNCTION ----- */
-    // Oef 1
+
     Out(Gate):Wire
     In1(Gate):Wire
     In2(Gate):Wire
 
 }
 
-structure Circuit : CircVoc {
+structure CIRC : CircVoc {
     /* ----- TYPE ----- */    
     Wire = { K; L; M; N; O; P; Q; R; }
     Gate = { A; B; C; D; E; }
+    /* ----- CONSTANTE ----- */
+	Aantal= {0..10}
     
     /* ----- RELATIE ----- */    
     XOR = { A; B; }
     AND = { C; D; }
     OR = { E; }
-    // Oef 2
+    
     //On = {K;M;N;Q;R}
-    // Oef 4
+    
+    // ..Wire
     InputWire= {K;L;M;}
-    InputWireOn = {K;M}
-    // Oef 7
-    //OutputWire= {P;R}
+    OutputWire= {P;R}
+    
+    // ...WireOn
+    InputWireOn = {K;L}
     //OutputWireOn = {P;R}
     
-    // Oef 10
-    ObservedOn = {N;}
-    ObservedOff = {Q;}
+    // Observed
+    ObservedOn = {O;}
+    ObservedOff = {N;}
     
     /* ----- FUNCTION ----- */
     Out = { A -> N; B -> P; C -> O; D -> Q; E -> R; }
@@ -65,40 +71,35 @@ structure Circuit : CircVoc {
     In2 = { A -> L; B -> M; C -> K; D -> N; E -> O; }
 }
 
-theory CircTh : CircVoc {
-    // Oef3
+theory THEO : CircVoc {
     //AND
-    !gate: AND(gate) => (On(In1(gate))& On(In2(gate)) <=> On(Out(gate))).
+    !gate: AND(gate) & ~Broken(gate) => (On(In1(gate))& On(In2(gate)) <=> On(Out(gate))).
     //OR
-    !gate: OR(gate) => (On(In1(gate)) | On(In2(gate)) <=> On(Out(gate))).
+    !gate: OR(gate)& ~Broken(gate) => (On(In1(gate)) | On(In2(gate)) <=> On(Out(gate))).
 	// XOR
-    !gate: XOR(gate) => ( 
-    						(
-    							On(In1(gate)) & ~On(In2(gate)) 
-    						) 	
-    						| 
-    						(
-    							~On(In1(gate)) & On(In2(gate))
-    						) 
+    !gate: XOR(gate)& ~Broken(gate) => ( 
+    	(On(In1(gate)) & ~On(In2(gate)) ) 	
+		| 
+		(~On(In1(gate)) & On(In2(gate))) 
     					 	
-    					<=> On(Out(gate))
-    					).
+    	<=> On(Out(gate))
+	).
     
-    // Oef 6: Als het ene inputwire is DAN geldt ... 
-    //!wire: InputWire(wire) => (InputWireOn(wire) <=> On(wire)).
-
-    // Oef 8: 
-    !wire: OutputWire(wire) => (OutputWireOn(wire) <=> On(wire)).
+	! wire[Wire]: InputWireOn(wire)=> InputWire(wire).
+    ! wire[Wire]: OutputWireOn(wire)=> OutputWire(wire).
     
-    // Oef 9
-      !wire[Wire]: ObservedOn(wire) => (ObservedOn(wire) <=> On(wire)).
-    
-    !wire[Wire]: ObservedOff(wire) => (ObservedOff(wire) <=> ~On(wire)).
+    ! wire[Wire]: ObservedOn(wire) => On(wire).
+    ! wire[Wire]: ObservedOff(wire) => ~On(wire).
 
+    nrBroken = #{g[Gate]: Broken(g)}.
+	
 
+}
+term TERM_BROKEN: CircVoc{
+    nrBroken
 }
 
 procedure main() {
     stdoptions.nbmodels = 100
-    printmodels(modelexpand(CircTh, Circuit))
+    printmodels(minimize(THEO, CIRC,TERM_BROKEN))
 }

@@ -1,0 +1,69 @@
+//KVD/OK
+/*
+ * permentier_mapfunc.idp
+ * Romeo Permentier
+ * 29/04/2021
+ */
+
+vocabulary V {
+    /* ----- TYPE ----- */
+	type Kleur
+	type Land
+    type Aantal isa int
+
+    /* ----- CONSTANTE ----- */   
+    AantalKleuren:Aantal
+    
+    /* ----- RELATIE ----- */
+	Grens(Land, Land)
+    
+    /* ----- FUNCTIE ----- */
+    ToegekendeKleur(Land): Kleur
+}
+/*
+structure S1 : V {
+	Kleur = { Rood; Oranje; Geel; Groen; Blauw}
+	Land = { Belgie; Nederland; Duitsland; Luxemburg; Frankrijk; Zwitserland; Oostenrijk }
+	Grens = { 
+		(Nederland,Belgie); 	 (Nederland,Duitsland);  (Belgie,Frankrijk);
+		(Belgie,Luxemburg); 	 (Belgie,Duitsland); 	 (Luxemburg,Frankrijk); 
+		(Luxemburg, Duitsland);  (Frankrijk,Duitsland);  (Frankrijk,Zwitserland); 
+		(Duitsland,Zwitserland); (Duitsland,Oostenrijk); (Zwitserland,Oostenrijk); 
+    }
+    
+        Aantal = {0..5}
+
+    
+}
+
+structure S2 : V {
+	Kleur = { Rood; Oranje; Geel; Groen; Blauw}
+	Land = { VL; WL; BXL}
+	Grens = {(VL,WL);(BXL,VL)}
+    
+    Aantal = {0..5}
+}
+*/
+
+include "europa.idp"
+
+
+theory T : V {
+    
+     ! land1 : ! land2: Grens(land1,land2) => ToegekendeKleur(land1)~= ToegekendeKleur(land2).
+    
+     AantalKleuren = #{k[Kleur]:?l[Land]:ToegekendeKleur(l)=k}.
+     
+}
+
+term t: V{
+    //#{wat je telt : conditie (die nog eens ":" bevat)}
+    AantalKleuren
+    
+}
+
+procedure main() {
+    stdoptions.nbmodels = 100
+    printmodels ( minimize (T, S_euro,t))
+    print(AantalKleuren)
+}

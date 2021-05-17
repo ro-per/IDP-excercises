@@ -1,0 +1,28 @@
+/*
+ * permentier_grafe.idp
+ * Romeo Permentier
+ * 17/05/2021
+ */
+vocabulary V {
+    type Knoop
+    Boog(Knoop, Knoop)
+    Bereikt(Knoop)
+    Start: Knoop
+}
+
+structure S : V {
+    Knoop = { A; B; C; D; E; }
+    Boog = { A,B ; A,C ; B,E ; C,D ; C,E ; D,E ; E,B; }
+    Start = A
+}
+
+Theory T : V {
+   {
+        !k: Bereikt(k) <- Boog(Start, k).
+   		!k1 k2: Bereikt(k2) <- ?k3: Boog(k1,k3) & Boog(k3,k2).     
+   }
+}
+
+procedure main(){
+    printmodels(modelexpand(T,S))
+}
