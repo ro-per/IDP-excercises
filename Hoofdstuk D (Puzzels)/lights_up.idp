@@ -16,13 +16,14 @@ vocabulary Voc {
     /* ----- RELATIE ----- */
     Lamp(R,K)
     Verlicht(R,K)
-    Obstakel(R, K,Getal)
+    Obstakel(R, K)
     Grens(R,K,R,K)
     
 
 
     
     /* ----- FUNCTIE ----- */
+    ObstakelWaarde(R,K):Getal
 
     
 }
@@ -35,16 +36,16 @@ structure Struct : Voc {
     
     
     Obstakel = {
-        1,2,0; 1,3,0;
-        2,7,1;
-        3,7,0;
-        
-        5,1,1;
-        6,1,-1;
-        7,5,2; 7,6,-1;
+        1,2; 1,3;
+        2,7;
+        3,7;
+       
+        5,1;
+        6,1;
+        7,5; 7,6;
         
     }
-    
+   
     
   
 }
@@ -67,7 +68,7 @@ theory Theo : Voc {
         .}   
     
 //B. OP EEN OBSTAKEL KAN GEEN LAMP STAAN
-    ! r k: ~(Lamp(r,k) & Obstakel(r,k,g)).
+    ! r k: ~(Lamp(r,k) & Obstakel(r,k)).
     
 
     
@@ -93,15 +94,19 @@ theory Theo : Voc {
     
 //D.AAN ELK OBSTAKEL MOET HET JUIST AANTAL LAMPEN STAAN
     
-     // r1,k1 = midden
+    
+    
+    ! r k: ~Obstakel(r,k) =>  ObstakelWaarde(r,k)=0.
+    
+    // r1,k1 = midden
     // r2,k2 = grenzend vakje
     
-    ! r1[R],k1[K],g[Getal]: #{r2[R],k2[K]:Grens(r1,k1,r2,k2)& Obstakel(r1,k1,g) & Lamp(r2,k2)}=g.
+    //#{r1[R], k1[K],r2[R], k2[K]: Lamp(r2,k2) & Grens(r1,k1,r2,k2) & Obstakel(r1,k1)} = 
     
-  
     
-
+    //#{g:Obstakel(r1,k1,g)}
     
+    //.
     
     
 }
