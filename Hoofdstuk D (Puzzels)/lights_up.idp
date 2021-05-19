@@ -22,7 +22,8 @@ vocabulary Voc {
     Verlicht(R,K)
     Obstakel(R, K)
     Fout(R,K)
-    //ObstakelWaarde(R, K,Getal)
+    
+    
 
   
     Lamp(R,K)
@@ -30,7 +31,8 @@ vocabulary Voc {
     
     /* ----- FUNCTIE ----- */
     
-    VerlichteBuren(R,K):Getal
+    LampBuren(R,K):Getal
+    partial ObstakelWaarde(R, K):Getal
 
     
 }
@@ -40,7 +42,9 @@ structure Struct : Voc {
     K = {1..7}
     Getal = {0..4}
     I = {1..7}
-    l ={1..100000}
+    l ={0..100000}
+    
+    //Verlicht={4,5;}
     
     
     Obstakel = {
@@ -53,14 +57,14 @@ structure Struct : Voc {
         7,4; 7,5; 7,6;
         
     }
-    /*ObstakelWaarde={
+    ObstakelWaarde={
         1,4,2;
     	4,1,2; 4,4,1;
     	6,1,1;
     	7,6,1;
     	
         
-    }*/
+    }
     
     
   
@@ -69,15 +73,31 @@ structure Struct : Voc {
 theory Theo : Voc {
     
     
-    Buren(x1, x2, y1, y2) <=> (abs(x1-x2)=<1 & y1=y2)| (abs(y1-y2)=<1 & x1=x2).
+    Buren(x1, x2, y1, y2) <=> (abs(x1-x2)=1 & y1=y2)| (abs(y1-y2)=1 & x1=x2).
     
     
     
     {
-        VerlichteBuren(x, y) = #{x1, y1 : Verlicht(x1,y1) & Buren(x, x1, y, y1)}.
+        LampBuren(x, y) = #{x1, y1 : Lamp(x1,y1) & Buren(x, x1, y, y1)}.
      }
     
-    
+    {
+        // FOUT indien obstakel niet genoeg buren heeft
+        ! x,y : Fout(x,y) <- LampBuren(x,y) ~= ObstakelWaarde(x,y) & ?c : c=ObstakelWaarde(x, y).
+        
+        // FOUT indien geen obstakel tussen 2 lampen
+        // 1 .................. 2 --> FOUT
+    	// 1 ........3......... 2 --> GEEN FOUT
+        
+        /*
+        ! x,y : Fout(x, y) <- Lamp(x,y) & ?y1 : y~=y1 & Lamp(x,y1)
+        			& ~(?z : (y<z<y1 | y1<z<y) &  Obstakel(x,z)).
+        
+        ! x,y :Fout(x, y) <-Lamp(x,y) & ?x1 : x~=x1 & Lamp(x1,y)
+        			& ~(?z : (x<z<x1 | x1<z<x) & Obstakel(z,y)).
+        */
+    }
+   
     /*
     {
         Verlicht(x,y) <- ?y1 : 
@@ -85,28 +105,23 @@ theory Theo : Voc {
         
         Verlicht(x,y) <- ?x1 : 
         	Verlicht(x1,y) & ~(?z : (x<z<x1 | x1<z<x) & Obstakel(z,y)).
-        
-        
-        
-        
-        
-        //error(x, y) <- counted(x, y) ~= count(x, y) & ?c : c=count(x, y).
-  
-    
   }
-    
-    {
-        Fout(x, y) <- Verlicht(x,y) & ?y1 : y~=y1 & Verlicht(x,y1)
-        			& ~(?z : (y<z<y1 | y1<z<y) &  Obstakel(x,z)).
-        
-        Fout(x, y) <-Verlicht(x,y) & ?x1 : x~=x1 & Verlicht(x1,y)
-        			& ~(?z : (x<z<x1 | x1<z<x) & Obstakel(z,y)).
-    }
-    
+
     */
-	lampen = #{r k: Lamp(r,k)}.
-    fouten = #{r k: Fout(r,k)}.
     
+    
+    //op obstakel kan geen lamp staan
+     !r1[R],r2[R], k1[K], k2[K]:
+
+    	Lamp(r1,k1) & Lamp(r2,k2) => ~(
+    		Obstakel(r1,k1)|Obstakel(r2,k2)).
+    
+    
+	lampen = #{r k: Lamp(r,k)}.
+    //#{r k: Fout(r,k)}=0.
+    fouten = #{r k: Fout(r,k)}.
+    fouten=0.
+
     
 }
 
@@ -118,8 +133,8 @@ term termfouten: Voc{
 }
 
 procedure main() {
-    //stdoptions.nbmodels = 100
-    //printmodels(modelexpand(Theo,Struct))
-    printmodels(minimize(Theo, Struct,termfouten))
+    stdoptions.nbmodels = 100
+    printmodels(modelexpand(Theo,Struct))
+    //printmodels(minimize(Theo, Struct,termfouten))
     //printmodels(maximize(Theo, Struct,termfouten))
 }
