@@ -59,118 +59,27 @@ structure Struct : Voc {
 theory Theo : Voc {
     
 //A. LAMPEN KUNNEN ELKAAR NIET VERLICHTEN 
+    //behalve ALS ER EEN OBSTAKEL TUSSEN STAAT
+    !r1[R],r2[R], k1[K], k2[K]:
     
-    
-    // Als er een obstakel tussen twee plaatsen staat, mogen daar lampen staan
-    
-    
-    // als er geen obstakel tussen staat mag het niet
-    
-    
-    
-    /* --------------------ZELFDE KOLOM-------------------------------------- */
-    // ALS HET DEZELFDE OF RIJ IS ...
-    !r1,r2,k1,k2,r3,k3:  
-    
-    (r1~=r2~=r3 & k1=k2=k3) & ((r1<r3<r2)&(r2<r3<r1))
-    					
-    
-    // ... EN ER STAAT EEN LAMP OP 1 ...
+    ((r1=r2 & k1~=k2) | (r1~=r2 & k1=k2))
     &
-    (Lamp(r1,k1))
-    &
-    Obstakel(r3,k3)
-    
-    // .. DAN KAN ER GEEN LAMP OP 2 STAAN
-    =>  Lamp(r2, k2).
-    
-    
-    
-    // ALS HET DEZELFDE OF RIJ IS ...
-    !r1,r2,k1,k2,r3,k3:  
-    
-    (r1~=r2~=r3 & k1=k2=k3) & ((r1<r3<r2)&(r2<r3<r1))
-    					
-    
-    // ... EN ER STAAT EEN LAMP OP 1 ...
-    &
-    (Lamp(r1,k1))
-    &
-    ~Obstakel(r3,k3)
-    
-    // .. DAN KAN ER GEEN LAMP OP 2 STAAN
+    (Lamp(r1,k1)) 
     =>  ~Lamp(r2, k2).
-    
-    
-    
-    
- 
-    
-    /* --------------------ZELFDE RIJ-------------------------------------- */
-    // ALS HET DEZELFDE OF RIJ IS ...
-    !r1[R],r2[R],r3[R], k1[K], k2[K],k3[K]:    (r1=r2 & k1~=k2)
-	
-    // ... TENZIJ er een obstakel tussen staat...
-    &
-    ((k1<k3<k2)&(k2<k3<k1))
-    &
-    ~Obstakel(r3,k3)
-    
-    // ... EN ER STAAT EEN LAMP OP 1 ...
-    &
-    (Lamp(r1,k1))
-    
-    // .. DAN KAN ER GEEN LAMP OP 2 STAAN
-    =>  ~Lamp(r2, k2).
-    
-    
-    
-    
- 
-    
-    
-    
-    
-     //neighbours(x, x1, y, y1) <=> (abs(x-x1)=<1 & y=y1)| (abs(y-y1)=<1 & x=x1).
     
     
 //A. EEN VAKJE IS VERLICHT ALS ER EEN LAMP STAAT IN DEZELFDE RIJ OF KOLOM
     //behalve ALS ER EEN OBSTAKEL TUSSEN STAAT
 
-    /*
     { !r1[R], k1[K],r2[R], k2[K]: Verlicht(r1,k1)<-
         (
             (k1=k2 & Lamp(r2,k2)) 
             |
             (r1=r2 & Lamp(r2,k2))
         )
-        .}
+        .}   
     
-    */
-    
-    {
-    Verlicht(x, y) <- ?y1 : 
-        Verlicht(x,y1)
-        & 
-        ~(?z : (y<z<y1 | y1<z<y) & Obstakel(x,z)).
-        
-    Verlicht(x, y) <- ?x1 : 
-        Verlicht(x1,y)
-        & 
-        ~(?z : (x<z<x1 | x1<z<x) & Obstakel(z,y)).
-        
-        
-        
-      
-        
-        
-        
-        
-        
-        
-        }
-    
-//WERKT !!! //B. OP EEN OBSTAKEL KAN GEEN LAMP STAAN
+//B. OP EEN OBSTAKEL KAN GEEN LAMP STAAN
     !r1[R],r2[R], k1[K], k2[K]:
     	
     	Lamp(r1,k1) & Lamp(r2,k2) => ~(
@@ -179,7 +88,7 @@ theory Theo : Voc {
 
     
 //C. ELK VAKJE MOET VERLICHT ZIJN
-    //! r,k: Verlicht(r,k).
+    ! r,k: Verlicht(r,k).
     
 
     
@@ -205,11 +114,6 @@ theory Theo : Voc {
     
     //! r1[R],k1[K],g[Getal]: #{r2[R],k2[K]:Grens(r1,k1,r2,k2)& Obstakel(r1,k1,g) & Lamp(r2,k2)}=g.
     
-    
-    
-    
-    #{r[R] k[K]:Lamp(r,k)} =7.
-    
   
     
 
@@ -218,6 +122,6 @@ theory Theo : Voc {
 }
 
 procedure main() {
-    stdoptions.nbmodels = 1000
+    stdoptions.nbmodels = 100
     printmodels(modelexpand(Theo,Struct))
 }
