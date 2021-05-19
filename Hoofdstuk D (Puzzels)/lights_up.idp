@@ -20,9 +20,6 @@ vocabulary Voc {
     Verlicht(R,K)
     Obstakel(R, K)
     Fout(R,K)
-    
-    
-
   
     Lamp(R,K)
     
@@ -35,13 +32,11 @@ vocabulary Voc {
     
 }
 
-structure Struct : Voc {
+structure Struct_7x7_normal : Voc {
     R = {1..7}
     K = {1..7}
     Getal = {0..4}
     l ={0..100000}
-    
-    
     
     Obstakel = {
         1,2; 1,3; 1,4;
@@ -61,6 +56,50 @@ structure Struct : Voc {
     	
         
     }
+    
+
+}
+structure Struct_14x14_hard : Voc {
+    R = {1..14}
+    K = {1..14}
+    Getal = {0..4}
+    l ={0..100000}
+    
+
+    Obstakel = {
+        1,2;	1,3;	1,7;	1,11;
+        2,2;	2,13;	2,14;
+        3,4;	3,14;
+        4,1;	4,4;	4,8;	4,9;	4,10;	4,11;	4,12;
+        5,4;
+        6,4;	6,7;	6,8;
+        7,4;	7,6;	7,9;	7,14;
+        8,1;	8,6;	8,9;	8,11;
+        9,7;	9,8;	9,11;
+        10,11;
+        11,3;	11,4;	11,5;	11,6;	11,7;	11,11;	11,14;
+        12,1;	12,11;
+        13,1;	13,2;	13,13;
+        14,4;	14,8;	14,12;	14,13;
+    }
+    ObstakelWaarde={
+        1,2,1;	1,7,1;	1,11,0;
+        2,2,1;	2,14,1;
+
+        4,8,0;	4,9,1;	4,10,1;
+
+        6,4,1;
+        7,6,1;	7,9,1;	7,14,0;
+        8,1,1;	8,11,0;
+        9,7,2;	9,11,0;
+
+        11,5,1;	11,6,1;	11,7,1;	11,11,1;	11,14,0;
+
+        13,1,1;	13,13,2;
+        14,8,2;
+    }
+    
+    
     
     
   
@@ -122,7 +161,8 @@ theory Theo : Voc {
     
     
 	lampen = #{r k: Lamp(r,k)}.
-    //#{r k: Fout(r,k)}=0.
+    
+    // GEEN FOUTEN MAKEN
     #{r k: Fout(r,k)}=0.
 
     
@@ -134,7 +174,7 @@ term termlampen: Voc{
 
 procedure main() {
     stdoptions.nbmodels = 100
-    printmodels(modelexpand(Theo,Struct))
+    printmodels(modelexpand(Theo,Struct_14x14_hard))
     //printmodels(minimize(Theo, Struct,termlampen))
     //printmodels(maximize(Theo, Struct,termlampen))
 }
