@@ -131,9 +131,6 @@ theory Theo : Voc {
 term termlampen: Voc{
     lampen
 }
-term termfouten: Voc{
-    fouten
-}
 
 procedure main() {
     stdoptions.nbmodels = 100
