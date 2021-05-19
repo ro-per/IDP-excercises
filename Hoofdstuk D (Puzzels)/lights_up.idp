@@ -10,12 +10,10 @@ vocabulary Voc {
  	type R isa nat //RIJ
     type K isa nat //KOLOM
     type Getal isa int
-    type I isa nat
     type l isa int
     
     /* ----- CONSTANTE ----- */ 
     lampen: l
-    fouten: l
 
     /* ----- RELATIE ----- */
     Buren(R,R,K,K)
@@ -41,10 +39,8 @@ structure Struct : Voc {
     R = {1..7}
     K = {1..7}
     Getal = {0..4}
-    I = {1..7}
     l ={0..100000}
     
-    //Verlicht={4,5;}
     
     
     Obstakel = {
@@ -127,8 +123,7 @@ theory Theo : Voc {
     
 	lampen = #{r k: Lamp(r,k)}.
     //#{r k: Fout(r,k)}=0.
-    fouten = #{r k: Fout(r,k)}.
-    fouten=0.
+    #{r k: Fout(r,k)}=0.
 
     
 }
@@ -141,8 +136,8 @@ term termfouten: Voc{
 }
 
 procedure main() {
-    //stdoptions.nbmodels = 100
-    //printmodels(modelexpand(Theo,Struct))
-    printmodels(minimize(Theo, Struct,termlampen))
+    stdoptions.nbmodels = 100
+    printmodels(modelexpand(Theo,Struct))
+    //printmodels(minimize(Theo, Struct,termlampen))
     //printmodels(maximize(Theo, Struct,termlampen))
 }
