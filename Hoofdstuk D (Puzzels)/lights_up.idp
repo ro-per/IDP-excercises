@@ -96,18 +96,26 @@ theory Theo : Voc {
         ! x,y :Fout(x, y) <-Lamp(x,y) & ?x1 : x~=x1 & Lamp(x1,y)
         			& ~(?z : (x<z<x1 | x1<z<x) & Obstakel(z,y)).
         
-    }
-   
-    /*
-    {
-        Verlicht(x,y) <- ?y1 : 
-        	Verlicht(x,y1) & ~(?z : (y<z<y1 | y1<z<y) & Obstakel(x,z)).
         
-        Verlicht(x,y) <- ?x1 : 
-        	Verlicht(x1,y) & ~(?z : (x<z<x1 | x1<z<x) & Obstakel(z,y)).
-  }
+        //FOUT indien het geen obstakel is en niet verlicht is
+        
+        ! x,y :Fout(x, y) <- ~Obstakel(x,y) & ~Verlicht(x,y).
+        
+    }
+    
+    //! x y : ~Obstakel(x,y)=>Verlicht(x,y).
+   
+    
+    {
+       ! x,y : Verlicht(x,y) <- ?y1 : Lamp(x,y1) 
+        			& ~(?z : (y<z<y1 | y1<z<y) & Obstakel(x,z)).
+        
+      ! x,y: Verlicht(x,y) <- ?x1 : Lamp(x1,y) 
+        			& ~(?z : (x<z<x1 | x1<z<x) & Obstakel(z,y)).
+      
+  	}
 
-    */
+    
     
     
     //op obstakel kan geen lamp staan
@@ -135,6 +143,6 @@ term termfouten: Voc{
 procedure main() {
     //stdoptions.nbmodels = 100
     //printmodels(modelexpand(Theo,Struct))
-    //printmodels(minimize(Theo, Struct,termfouten))
-    printmodels(maximize(Theo, Struct,termlampen))
+    printmodels(minimize(Theo, Struct,termlampen))
+    //printmodels(maximize(Theo, Struct,termlampen))
 }
