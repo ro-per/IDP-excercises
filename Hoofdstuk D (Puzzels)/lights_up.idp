@@ -1,43 +1,42 @@
 /*
- * lights_up.idp
- * Cedric Lefevre
- * Romeo Permentier
- * 19/05/2021
- */
+* lights_up.idp
+* Cedric Lefevre
+* Romeo Permentier
+* 19/05/2021
+*/
+procedure main() {
+    stdoptions.nbmodels = 0
+    printmodels(modelexpand(T,normal_7x7))
+    //printmodels(modelexpand(T,hard_14x14))
+
+}
 
 vocabulary Voc {
     /* ----- TYPE ----- */
- 	type R isa nat //RIJ
-    type K isa nat //KOLOM
+    type R isa nat
+    type K isa nat
     type Getal isa int
-    type l isa int
-    
+
     /* ----- CONSTANTE ----- */ 
-    lampen: l
 
     /* ----- RELATIE ----- */
     Buren(R,R,K,K)
     Verlicht(R,K)
     Obstakel(R, K)
     Fout(R,K)
-  
     Lamp(R,K)
-    
-    
+
     /* ----- FUNCTIE ----- */
-    
     LampBuren(R,K):Getal
     partial ObstakelWaarde(R, K):Getal
 
-    
 }
 
-structure Struct_7x7_normal : Voc {
+structure normal_7x7 : Voc {
     R = {1..7}
     K = {1..7}
     Getal = {0..4}
-    l ={0..100000}
-    
+
     Obstakel = {
         1,2; 1,3; 1,4;
         2,7;
@@ -46,25 +45,21 @@ structure Struct_7x7_normal : Voc {
         5,1;
         6,1;
         7,4; 7,5; 7,6;
-        
+
     }
     ObstakelWaarde={
         1,4,2;
-    	4,1,2; 4,4,1;
-    	6,1,1;
-    	7,6,1;
-    	
-        
+        4,1,2; 4,4,1;
+        6,1,1;
+        7,6,1;  
     }
-    
+
 
 }
-structure Struct_14x14_hard : Voc {
+structure hard_14x14 : Voc {
     R = {1..14}
     K = {1..14}
-    Getal = {0..4}
-    l ={0..100000}
-    
+    Getal = {0..4}    
 
     Obstakel = {
         1,2;	1,3;	1,7;	1,11;
@@ -98,83 +93,47 @@ structure Struct_14x14_hard : Voc {
         13,1,1;	13,13,2;
         14,8,2;
     }
-    
-    
-    
-    
-  
 }
 
-theory Theo : Voc {
-    
-    
-    Buren(x1, x2, y1, y2) <=> (abs(x1-x2)=1 & y1=y2)| (abs(y1-y2)=1 & x1=x2).
-    
-    
-    
+theory T : Voc {
+/* --------------------------- BUREN ---------------------------*/
+    // HOU EEN MAPPING BIJ VAN DE BUREN VAN (X1,Y1)
+    ! x1 x2 y1 y2: Buren(x1, x2, y1, y2) <=> (abs(x1-x2)=1 & y1=y2) | (abs(y1-y2)=1 & x1=x2).
+
+    // TEL DE BUREN (DIE EEN LAMP) ZIJN VAN (X1,Y1)
     {
-        LampBuren(x, y) = #{x1, y1 : Lamp(x1,y1) & Buren(x, x1, y, y1)}.
-     }
-    
+        !x1 y1: LampBuren(x1, y1) = #{x2[R], y2[R] : Lamp(x2,y2) & Buren(x1, x2, y1, y2)}.
+    }
+
+/* --------------------------- DEFINIEER VERLICHTE VAKJES ---------------------------*/
     {
-        // FOUT indien obstakel niet genoeg buren heeft
-        ! x,y : Fout(x,y) <- LampBuren(x,y) ~= ObstakelWaarde(x,y) & ?c : c=ObstakelWaarde(x, y).
-        
-        // FOUT indien geen obstakel tussen 2 lampen
-        // 1 .................. 2 --> FOUT
-    	// 1 ........3......... 2 --> GEEN FOUT
-        
-        
-        ! x,y : Fout(x, y) <- Lamp(x,y) & ?y1 : y~=y1 & Lamp(x,y1)
-        			& ~(?z : (y<z<y1 | y1<z<y) &  Obstakel(x,z)).
-        
-        ! x,y :Fout(x, y) <-Lamp(x,y) & ?x1 : x~=x1 & Lamp(x1,y)
-        			& ~(?z : (x<z<x1 | x1<z<x) & Obstakel(z,y)).
-        
-        
-        //FOUT indien het geen obstakel is en niet verlicht is
-        
+        //VERLICHT INDIEN ER EEN LAMP IN DEZELFDE RIJ OF KOLOM STAAT, ZONDER OBSTAKEL ER TUSSEN
+            // Zelfde kolom
+            ! x,y : Verlicht(x,y) <- ?y1 : Lamp(x,y1) & ~(?z : (y<z<y1 | y1<z<y) & Obstakel(x,z)).
+            // Zelfde rij
+            ! x,y: Verlicht(x,y) <- ?x1 : Lamp(x1,y) & ~(?z : (x<z<x1 | x1<z<x) & Obstakel(z,y)).
+    }
+
+/* --------------------------- OBSTAKEL(X,Y)~=LAMP(X,Y) ---------------------------*/
+    !x1[R],x2[R], y1[K], y2[K]:Lamp(x1,y1) & Lamp(x2,y2) => ~(Obstakel(x1,y1)|Obstakel(x2,y2)).
+
+/* --------------------------- DEFINIEER FOUTEN ---------------------------*/
+    {
+        // FOUT INDIEN EEN OBSTAKEL NIET HET JUISTE AANTAL LAMPEN HEEFT ALS BUUR
+        ! x,y : Fout(x,y) <- LampBuren(x,y) ~= ObstakelWaarde(x,y) & ?c[Getal] : c=ObstakelWaarde(x, y).
+
+        // FOUT INDIEN TWEE LAMPEN OP DEZELFDE RIJ OF KOLOM ZONDER OBSTAKEL ER TUSSEN
+            // Rij={....(x,y) .............(x,y1).....} --> FOUT
+            ! x,y : Fout(x, y) <- Lamp(x,y) & ?y1 : y~=y1 & Lamp(x,y1)& ~(?z : (y<z<y1 | y1<z<y) &  Obstakel(x,z)).
+
+            // Kolom={....(x,y) .............(x1,y).....} --> FOUT
+            ! x,y :Fout(x, y) <-Lamp(x,y) & ?x1 : x~=x1 & Lamp(x1,y) & ~(?z : (x<z<x1 | x1<z<x) & Obstakel(z,y)).
+
+
+        //FOUT INDIEN EEN VAKJE NIET VERLICHT IS (EN GEEN OBSTAKEL IS)
         ! x,y :Fout(x, y) <- ~Obstakel(x,y) & ~Verlicht(x,y).
-        
     }
     
-    //! x y : ~Obstakel(x,y)=>Verlicht(x,y).
-   
-    
-    {
-       ! x,y : Verlicht(x,y) <- ?y1 : Lamp(x,y1) 
-        			& ~(?z : (y<z<y1 | y1<z<y) & Obstakel(x,z)).
-        
-      ! x,y: Verlicht(x,y) <- ?x1 : Lamp(x1,y) 
-        			& ~(?z : (x<z<x1 | x1<z<x) & Obstakel(z,y)).
-      
-  	}
-
-    
-    
-    
-    //op obstakel kan geen lamp staan
-     !r1[R],r2[R], k1[K], k2[K]:
-
-    	Lamp(r1,k1) & Lamp(r2,k2) => ~(
-    		Obstakel(r1,k1)|Obstakel(r2,k2)).
-    
-    
-	lampen = #{r k: Lamp(r,k)}.
-    
-    // GEEN FOUTEN MAKEN
-    #{r k: Fout(r,k)}=0.
-
-    
-}
-
-term termlampen: Voc{
-    lampen
-}
-
-procedure main() {
-    stdoptions.nbmodels = 100
-    printmodels(modelexpand(Theo,Struct_14x14_hard))
-    //printmodels(minimize(Theo, Struct,termlampen))
-    //printmodels(maximize(Theo, Struct,termlampen))
+    // AANTAL FOUTEN MOET 0 ZIJN
+    #{x[R] y[K]: Fout(x,y)}=0.
 }
