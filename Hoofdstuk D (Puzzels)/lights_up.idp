@@ -11,17 +11,26 @@ vocabulary Voc {
     type K isa nat //KOLOM
     type Getal isa int
     type I isa nat
+    type l isa int
     
-    /* ----- CONSTANTE ----- */  
-    
+    /* ----- CONSTANTE ----- */ 
+    lampen: l
+    fouten: l
+
     /* ----- RELATIE ----- */
-    Lamp(R,K)
+    Buren(R,R,K,K)
     Verlicht(R,K)
-    
     Obstakel(R, K)
+    Fout(R,K)
     //ObstakelWaarde(R, K,Getal)
+
+  
+    Lamp(R,K)
+    
     
     /* ----- FUNCTIE ----- */
+    
+    VerlichteBuren(R,K):Getal
 
     
 }
@@ -31,6 +40,7 @@ structure Struct : Voc {
     K = {1..7}
     Getal = {0..4}
     I = {1..7}
+    l ={1..100000}
     
     
     Obstakel = {
@@ -58,70 +68,58 @@ structure Struct : Voc {
 
 theory Theo : Voc {
     
-//A. LAMPEN KUNNEN ELKAAR NIET VERLICHTEN 
-    //behalve ALS ER EEN OBSTAKEL TUSSEN STAAT
-    !r1[R],r2[R], k1[K], k2[K]:
     
-    ((r1=r2 & k1~=k2) | (r1~=r2 & k1=k2))
-    &
-    (Lamp(r1,k1)) 
-    =>  ~Lamp(r2, k2).
-    
-    
-//A. EEN VAKJE IS VERLICHT ALS ER EEN LAMP STAAT IN DEZELFDE RIJ OF KOLOM
-    //behalve ALS ER EEN OBSTAKEL TUSSEN STAAT
-
-    { !r1[R], k1[K],r2[R], k2[K]: Verlicht(r1,k1)<-
-        (
-            (k1=k2 & Lamp(r2,k2)) 
-            |
-            (r1=r2 & Lamp(r2,k2))
-        )
-        .}   
-    
-//B. OP EEN OBSTAKEL KAN GEEN LAMP STAAN
-    !r1[R],r2[R], k1[K], k2[K]:
-    	
-    	Lamp(r1,k1) & Lamp(r2,k2) => ~(
-    		Obstakel(r1,k1)|Obstakel(r2,k2)).
-    
-
-    
-//C. ELK VAKJE MOET VERLICHT ZIJN
-    ! r,k: Verlicht(r,k).
-    
-
+    Buren(x1, x2, y1, y2) <=> (abs(x1-x2)=<1 & y1=y2)| (abs(y1-y2)=<1 & x1=x2).
     
     
     
-//D. BIJHOUDEN VAN GRENZENDE VAKJES
-    /*{	
-        // ONDERSTE VAKJE
-        !r1[I] k1[I] r2[I] k2[I]: Grens(r1,k1,r2,k2) <- (r1+1 = r2) & (k1=k2).
-        // BOVENSTE VAKJE
-        !r1[I] k1[I] r2[I] k2[I]: Grens(r1,k1,r2,k2) <- (r1-1 = r2) & (k1=k2).
-        // LINKS VAKJE
-        !r1[I] k1[I] r2[I] k2[I]: Grens(r1,k1,r2,k2) <- (r1 = r2) & (k1-1=k2).
-        // RECHTE VAKJE
-        !r1[I] k1[I] r2[I] k2[I]: Grens(r1,k1,r2,k2) <- (r1 = r2) & (k1+1=k2).
-    }*/
+    {
+        VerlichteBuren(x, y) = #{x1, y1 : Verlicht(x1,y1) & Buren(x, x1, y, y1)}.
+     }
     
     
-//D.AAN ELK OBSTAKEL MOET HET JUIST AANTAL LAMPEN STAAN
-    
-     // r1,k1 = midden
-    // r2,k2 = grenzend vakje
-    
-    //! r1[R],k1[K],g[Getal]: #{r2[R],k2[K]:Grens(r1,k1,r2,k2)& Obstakel(r1,k1,g) & Lamp(r2,k2)}=g.
-    
+    /*
+    {
+        Verlicht(x,y) <- ?y1 : 
+        	Verlicht(x,y1) & ~(?z : (y<z<y1 | y1<z<y) & Obstakel(x,z)).
+        
+        Verlicht(x,y) <- ?x1 : 
+        	Verlicht(x1,y) & ~(?z : (x<z<x1 | x1<z<x) & Obstakel(z,y)).
+        
+        
+        
+        
+        
+        //error(x, y) <- counted(x, y) ~= count(x, y) & ?c : c=count(x, y).
   
     
-
+  }
+    
+    {
+        Fout(x, y) <- Verlicht(x,y) & ?y1 : y~=y1 & Verlicht(x,y1)
+        			& ~(?z : (y<z<y1 | y1<z<y) &  Obstakel(x,z)).
+        
+        Fout(x, y) <-Verlicht(x,y) & ?x1 : x~=x1 & Verlicht(x1,y)
+        			& ~(?z : (x<z<x1 | x1<z<x) & Obstakel(z,y)).
+    }
+    
+    */
+	lampen = #{r k: Lamp(r,k)}.
+    fouten = #{r k: Fout(r,k)}.
     
     
 }
 
+term termlampen: Voc{
+    lampen
+}
+term termfouten: Voc{
+    fouten
+}
+
 procedure main() {
-    stdoptions.nbmodels = 100
-    printmodels(modelexpand(Theo,Struct))
+    //stdoptions.nbmodels = 100
+    //printmodels(modelexpand(Theo,Struct))
+    printmodels(minimize(Theo, Struct,termfouten))
+    //printmodels(maximize(Theo, Struct,termfouten))
 }
