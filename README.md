@@ -1,30 +1,9 @@
-# IDP-LabSessions
+- [IIW KU LEUVEN]()
+- [Author 1: Romeo Permentier](https://github.com/ro-per)
+- [Author 2: Cedric Lefevre](https://github.com/Cedric-Lefevre)
 
-See each folder for the pdf of the assignement.
-In feedback folder you can find the feedback of the teacher. (in .idp files: search for KVD in comments)
+- [Teacher: Kylian Van Dessel](https://www.kuleuven.be/wieiswie/nl/person/00104181)
+- [Course: Artificiële Intelligentie](https://onderwijsaanbod.kuleuven.be//2020/syllabi/n/JPI0QEN.htm#activetab=doelstellingen_idm2963040)
+- [Subject: IDP](https://dtai.cs.kuleuven.be/drupal/software/idp/try)
 
-Lab1
-- abc.idp
-- dagen.idp
-- diet.idp
-- docenten.idp
-- mapfunc.idp
-- pqr.idp
-- vakken.idp
-- xyz.idp
-
-Lab2
-- circuit.idp
-- mapopt.idp
-- map.idp
-
-Lab3
-- fib.idp
-- geslaagd.idp
-- grafe.idp
-- koningin.ipd
-- voorouder.idp
-- sudoku.idp
-
-Project
-- Lampjes
+See [assignement](assignement.md) for more info.
