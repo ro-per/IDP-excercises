@@ -1,3 +1,4 @@
+#IDP-LabSessions
 - [IIW KU LEUVEN]()
 - [Author 1: Romeo Permentier](https://github.com/ro-per)
 - [Author 2: Cedric Lefevre](https://github.com/Cedric-Lefevre)
