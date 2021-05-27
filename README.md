@@ -8,3 +8,4 @@
 - [Subject: IDP](https://dtai.cs.kuleuven.be/drupal/software/idp/try)
 
 See [assignement](assignement.md) for more info.
+See [feedback](feedback/feedback.md) for feedback on the assignments.
