@@ -4,29 +4,29 @@ IDP-LabSessions
 - FIXME: redundant
 - TODO: correct
 # Overview of comments
-- feedback_cde.idp
+- [cde.idp](feedback_cde.idp)
     - line 7: BUG / ontbreekt nog vanalles: letters mogen niet dezelfde waarde hebben, eerste letters mogen niet 0 zijn, en je som is niet juist.
-- feedback_circuit.idp
+- [circuit.idp](feedback_circuit.idp)
     - line 95: FIXME / redundant, !x [Wire]: ObservedOn(x) => On(x).
     - line 98: FIXME / redundant, !x [Wire]: ObservedOff(x) => ¬On(x).
-- feedback_circuitdiag.idp
+- [circuitdiag.idp](feedback_circuitdiag.idp)
     - line 89: BUG / Je zegt helemaal niets over dat wanneer een Wire InputWireOn is deze ook effectief On moet zijn...
-- feedback_circuittest.idp
+- [circuittest.idp](feedback_circuittest.idp)
     - line 1: BUG / OK buiten voorgaande opmerkingen, dus je zou moeten opgemerkt hebben dat dit niet werkt...
-- feedback_fib.idp
+- [fibonnaci.idp](feedback_fib.idp)
     - line 13: BUG / Waarom???
     - line 38: BUG 
-- feedback_geslaagd.idp
+- [geslaagd.idp](feedback_geslaagd.idp)
     - line 1: TODO / OK
-- feedback_grafe.idp
+- [grafe.idp](feedback_grafe.idp)
     - line 35: BUG / dit is geen inductieve definitie. als je de uitvoer bekijkt, zal je zien dat de bereikbaar slechts gedefinieerd is top twee bogen ver.
-- feedback_koningin.idp
+- [koningin.idp](feedback_koningin.idp)
     - line 37: FIXME / overbodig, maar OK
     - line 44: FIXME / overbodig
     - line 53: FIXME / overbodig
-- feedback_map.idp
+- [map.idp](feedback_map.idp)
     - line 32: BUG / Deze klopt nog niet, zie feedback labo 1
-- feedback_sudoku.idp
+- [sudoku.idp](feedback_sudoku.idp)
     - line 1: TODO / OK
-- feedback_voorouder.idp
+- [voorouder.idp](feedback_voorouder.idp)
     - line 1: TODO / OK
