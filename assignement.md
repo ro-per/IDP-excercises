@@ -1,7 +1,6 @@
 # IDP-LabSessions
 
 See each folder for the pdf of the assignement.
-In feedback folder you can find the feedback of the teacher. (in .idp files: search for KVD in comments)
 
 Lab1
 - abc.idp
@@ -12,6 +11,7 @@ Lab1
 - pqr.idp
 - vakken.idp
 - xyz.idp
+- cde.idp
 
 Lab2
 - circuit.idp
@@ -28,4 +28,3 @@ Lab3
 
 Project
 - lights_up
-- cde.idp
