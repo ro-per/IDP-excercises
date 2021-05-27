@@ -1,0 +1,47 @@
+/*
+ * permentier_fib.idp
+ * Romeo Permentier
+ * 17/05/2021
+ */
+vocabulary V {
+    /* ----- TYPE ----- */
+	type I isa nat
+    type Val isa nat
+    /* ----- CONSTANTE ----- */
+    
+    /* ----- RELATIE ----- */
+    Fib(I, I, I) // Koppeling van indexen //BUG/ Waarom???
+
+    
+    /* ----- FUNCTIE ----- */
+    Rij(I): Val
+}
+
+
+structure Struct : V {
+	I = { 0..10 }
+	Val = { 0..60 }  
+}
+
+theory Th_fib : V {
+    //EERSTE TWEE ELEMENTEN MOETEN GEKEND ZIJN
+    Rij(0) = 0.
+    Rij(1) = 1.
+    
+    //FIBONACCI FORMULE
+    !i1[I] i2[I] i3[I]: Fib(i1, i2, i3) => Rij(i3) = Rij(i1) + Rij(i2) .
+    
+    //VERBAND TUSSEN INDEXEN LEGGEN
+    {
+        !i1[I] i2[I] i3: Fib(i1, i2, i3) <-  (i2+1 = i3) & (i1+2 = i3).
+    }
+    //BUG
+    /* dit is niet de manier... je moest Rij/1:1 definieren in termen van zichzelf:
+          Rij(i) = ... 
+    }*/
+
+}
+
+procedure main(){
+    printmodels(modelexpand(Th_fib,Struct))
+}

@@ -1,0 +1,61 @@
+/*
+ * permentier_koningin.idp
+ * Romeo Permentier
+ * 17/05/2021
+ */
+vocabulary V {
+    /* ----- TYPE ----- */
+    type R isa nat
+    type K isa nat
+    /* ----- CONSTANTE ----- */
+    
+    /* ----- RELATIE ----- */
+    Q(R, K)
+    Slaan(R, K, R, K)
+    /* ----- FUNCTIE ----- */
+    
+}
+
+structure S : V {
+    R = {1..8}
+    K = {1..8}
+}
+
+theory T : V{
+    // AANTAL QUEENS = 8
+    #{r[R] k[K]: Q(r,k)} = 8.
+    
+    // ZOEK QUEENS DIE ELKAAR NIET SLAAN
+    !r1[R] r2[R] k1[K] k2[K]:  Q(r1,k1) & Q(r2,k2) => ~Slaan(r1, k1, r2, k2). 
+    
+    {
+        // HORIZONTAAL SLAAN
+        !r1[R] r2[R] k1[K] k2[K]: Slaan(r1, k1, r2, k2) <- 
+        
+        	r1 = r2 & k1 ~= k2 
+        	//& 
+        	//Q(r1,k1) & Q(r2,k2). //FIXME/ overbodig, maar OK
+        
+        //VERTICAAL SLAAN        
+        !r1[R] r2[R] k1[K] k2[K]: Slaan(r1, k1, r2, k2)<- 
+        	
+        	r1 ~= r2 & k1 = k2 
+        	//& 
+			//Q(r1,k1) & Q(r2,k2). //FIXME/ overbodig
+        
+        //DIAGONAAL SLAAN
+        !r1[R] r2[R] k1[K] k2[K]: Slaan(r1, k1, r2, k2) <- 
+        
+        	r1 ~= r2 & k1 ~= k2 
+        	& 
+        	abs(r1-r2) = abs(k1-k2) 
+        	//& 
+        	//Q(r1,k1) & Q(r2,k2). //FIXME/ overbodig
+    }
+}
+
+procedure main(){
+    stdoptions.nbmodels = 0
+    // EXPECTED VALUE = 92
+    printmodels(modelexpand(T,S))
+}

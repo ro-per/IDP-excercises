@@ -1,0 +1,42 @@
+/*
+ * permentier_grafe.idp
+ * Romeo Permentier
+ * 17/05/2021
+ */
+vocabulary V {
+    /* ----- TYPE ----- */
+    type Knoop
+    /* ----- CONSTANTE ----- */
+    
+    /* ----- RELATIE ----- */
+    Boog(Knoop, Knoop)
+    Bereikt(Knoop)
+    /* ----- FUNCTIE ----- */
+    
+}
+
+structure S : V {
+    Knoop = { A; B; C; D; E; }
+    Boog = { 
+        A,B;
+        C,E; 
+        B,E; 
+        C,D;
+        D,E;
+        A,C; 
+        E,B; }
+}
+
+Theory T : V {
+   {
+   	    !k1 k2: Bereikt(k2) <- ?k3: Boog(k1,k3) & Boog(k3,k2).
+        !k1 k2: Bereikt(k2) <- Boog(k1, k2).   
+   }
+    //BUG/ dit is geen inductieve definitie. als je de uitvoer bekijkt, zal je zien dat de bereikbaar slechts gedefinieerd is top twee bogen ver.
+
+}
+
+procedure main(){
+    stdoptions.nbmodels = 0
+    printmodels(modelexpand(T,S))
+}

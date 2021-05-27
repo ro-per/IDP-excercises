@@ -92,10 +92,10 @@ theory CircTh : CircVoc {
     
     // Oef 9
       !wire[Wire]: ObservedOn(wire) => (ObservedOn(wire) <=> On(wire)).
-    //KVD/ redundant, !x [Wire]: ObservedOn(x) => On(x).
+    //FIXME/ redundant, !x [Wire]: ObservedOn(x) => On(x).
 	
     !wire[Wire]: ObservedOff(wire) => (ObservedOff(wire) <=> ~On(wire)).
-	//KVD/ redundant, !x [Wire]: ObservedOff(x) => ¬On(x).
+	//FIXME/ redundant, !x [Wire]: ObservedOff(x) => ¬On(x).
 	
 
 }

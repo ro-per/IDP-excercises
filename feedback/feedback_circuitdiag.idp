@@ -1,0 +1,107 @@
+/*
+ * permentier_circuitdiag.idp
+ * Romeo Permentier
+ * 17/05/2021
+ */
+
+vocabulary CircVoc {
+    /* ----- TYPE ----- */
+    type Wire
+    type Gate
+    type Aantal isa int
+    
+    /* ----- CONSTANTE ----- */
+    nrBroken: Aantal
+
+    /* ----- RELATIE ----- */
+    XOR(Gate)
+    AND(Gate)
+    OR(Gate)
+
+    On(Wire)
+
+    InputWire(Wire)
+    InputWireOn(Wire)
+
+    OutputWire(Wire)
+    OutputWireOn(Wire)
+
+    ObservedOn(Wire)
+    ObservedOff(Wire)
+
+    Broken(Gate)
+    
+    /* ----- FUNCTION ----- */
+
+    Out(Gate):Wire
+    In1(Gate):Wire
+    In2(Gate):Wire
+
+}
+
+structure CIRC : CircVoc {
+    /* ----- TYPE ----- */    
+    Wire = { K; L; M; N; O; P; Q; R; }
+    Gate = { A; B; C; D; E; }
+    /* ----- CONSTANTE ----- */
+	Aantal= {0..10}
+    
+    /* ----- RELATIE ----- */    
+    XOR = { A; B; }
+    AND = { C; D; }
+    OR = { E; }
+    
+    //On = {K;M;N;Q;R}
+    
+    // ..Wire
+    InputWire= {K;L;M;}
+    OutputWire= {P;R}
+    
+    // ...WireOn
+    InputWireOn = {K;L}
+    //OutputWireOn = {P;R}
+    
+    // Observed
+    ObservedOn = {O;}
+    ObservedOff = {N;}
+    
+    /* ----- FUNCTION ----- */
+    Out = { A -> N; B -> P; C -> O; D -> Q; E -> R; }
+    In1 = { A -> K; B -> N; C -> L; D -> M; E -> Q; }
+    In2 = { A -> L; B -> M; C -> K; D -> N; E -> O; }
+}
+
+theory THEO : CircVoc {
+    //AND
+    !gate: AND(gate) & ~Broken(gate) => (On(In1(gate))& On(In2(gate)) <=> On(Out(gate))).
+    //OR
+    !gate: OR(gate)& ~Broken(gate) => (On(In1(gate)) | On(In2(gate)) <=> On(Out(gate))).
+	//XOR
+    !gate: XOR(gate)& ~Broken(gate) => ( 
+    	(On(In1(gate)) & ~On(In2(gate)) ) 	
+		| 
+		(~On(In1(gate)) & On(In2(gate))) 
+    					 	
+    	<=> On(Out(gate))
+	).
+    
+	! wire[Wire]: InputWireOn(wire)=> InputWire(wire).
+     //BUG/ Je zegt helemaal niets over dat wanneer een Wire InputWireOn is deze ook effectief On moet zijn...
+
+    ! wire[Wire]: OutputWireOn(wire)=> OutputWire(wire).
+    
+    ! wire[Wire]: ObservedOn(wire) => On(wire).
+    ! wire[Wire]: ObservedOff(wire) => ~On(wire).
+
+    nrBroken = #{g[Gate]: Broken(g)}.
+	
+
+}
+term TERM_BROKEN: CircVoc{
+    nrBroken
+}
+
+procedure main() {
+    stdoptions.nbmodels = 100
+    printmodels(minimize(THEO, CIRC,TERM_BROKEN))
+}

@@ -1,0 +1,55 @@
+/*
+ * permentier_cde.idp
+ * Romeo Permentier
+ * 19/05/2021
+ */
+
+//BUG/ ontbreekt nog vanalles: letters mogen niet dezelfde waarde hebben, eerste letters mogen niet 0 zijn, en je som is niet juist.
+
+vocabulary V {
+    /* ----- TYPE ----- */
+    type L isa int
+    
+    /* ----- CONSTANTE ----- */
+    A: L
+    B: L
+    C: L
+    D: L
+    E: L
+    I: L
+    /* ----- RELATIE ----- */
+    Even(L)
+    
+    /* ----- FUNCTIE ----- */
+    
+} 
+
+structure S : V {
+    L = {0..9}
+
+    
+    Even = {0;2;4;6;8}
+    
+    E = 6
+    
+}
+
+theory T : V {
+    ~Even(B).
+    ~Even(C).
+    ~Even(D).
+    
+    Even(A).
+    Even(E).
+    Even(I).
+    
+    A + B = D.
+    
+    I + A = E.
+    
+}
+
+procedure main() {	
+    stdoptions.nbmodels = 0
+    printmodels(modelexpand(T, S))	
+}

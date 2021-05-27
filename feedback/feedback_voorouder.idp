@@ -1,0 +1,43 @@
+//TODO/ OK 
+
+/*
+ * permentier_voorouder.idp
+ * Romeo Permentier
+ * 17/05/2021
+ */
+vocabulary V {
+    /* ----- TYPE ----- */
+    type Person
+    /* ----- CONSTANTE ----- */
+    
+    /* ----- RELATIE ----- */
+    Ouder(Person, Person) 		// p1: Ouder; p2: Kind
+    Voorouder(Person, Person)	// p1: Voorouder; p2:Ouder 
+    
+    /* ----- FUNCTIE ----- */
+} 
+
+structure S : V {
+    Ouder = {
+        //OUDERS
+        Mama, Ikke;
+        Papa, Ikke;
+        //GROOUTOUDERS
+        Opa, Papa; 
+        Oma, Papa;
+    	Bomma, Mama;
+    	Bompa, Mama}
+}
+
+theory T : V {
+	{
+        !voorouder ouder: Voorouder(voorouder, ouder) <- ?p3: Voorouder(voorouder, p3) & Voorouder(p3,ouder).
+        !ouder kind: Voorouder(ouder, kind) <- Ouder(ouder, kind).
+    }
+}
+
+
+procedure main() {
+    stdoptions.nbmodels = 0
+    printmodels(modelexpand(T,S))
+}

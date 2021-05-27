@@ -29,7 +29,7 @@ structure S: V {
 
 theory T: V {
     // grenzende landen niet dezelfde kleur (opdracht)
-    ?land1[Land] land2[Land] : !kleur1[Kleur] kleur2[Kleur]:  (Grens(land1, land2) & kleur1 ~= kleur2) => (ToegekendeKleur(land1, kleur1) & ToegekendeKleur(land2, kleur2)). //KVD/ Deze klopt nog niet, zie feedback labo 1
+    ?land1[Land] land2[Land] : !kleur1[Kleur] kleur2[Kleur]:  (Grens(land1, land2) & kleur1 ~= kleur2) => (ToegekendeKleur(land1, kleur1) & ToegekendeKleur(land2, kleur2)). //BUG/ Deze klopt nog niet, zie feedback labo 1
     
     
     // Elk land moet een kleur hebben (tip1)
